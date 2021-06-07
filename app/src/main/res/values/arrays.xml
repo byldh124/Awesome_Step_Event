@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="questions">
+        <item>Q. 걷기만 하면 기부가 되나요?</item>
+        <item>Q. 기부할때 필요한 것이 있나요?</item>
+        <item>Q. 대회는 언제까지 진행되나요?</item>
+        <item>Q. 기부되는 물품에는 어떤 것이 있나요?</item>
+        <item>Q. 회원탈퇴는 어떻게 하나요?</item>
+    </string-array>
+</resources>
