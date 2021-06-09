@@ -8,28 +8,27 @@
     tools:context=".view.QuestionActivity">
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/main">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/question_title"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:fontFamily="@font/font_ex"
+            android:textSize="18sp"/>
 
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_baseline_close_24"
-            app:tint="@color/black"
             android:layout_gravity="end"
             android:layout_marginRight="16dp"
             android:clickable="true"
             android:onClick="clickClose"/>
     </com.google.android.material.appbar.MaterialToolbar>
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:padding="16dp"
@@ -45,6 +44,9 @@
         android:layout_height="wrap_content"
         android:text="@string/button_question"
         android:onClick="clickQuestion"
+        android:background="@drawable/active_button_selector"
+        app:backgroundTint="@null"
+        android:fontFamily="@font/font_ex"
         android:layout_margin="16dp"/>
 
 </LinearLayout>

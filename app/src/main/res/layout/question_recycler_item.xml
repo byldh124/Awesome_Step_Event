@@ -22,6 +22,7 @@
             android:layout_weight="9"/>
 
         <ImageView
+            android:id="@+id/question_recycler_down_image"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
@@ -35,11 +36,12 @@
         android:padding="16dp"
         android:id="@+id/tv_question_detail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@color/background"/>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#ff888888"/>
+        android:layout_height="0.5dp"
+        android:background="#ffdddddd"/>
 
 </LinearLayout>

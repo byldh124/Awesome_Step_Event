@@ -15,7 +15,6 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.moondroid.awesome_step_event.R;
 
@@ -58,7 +57,7 @@ public class TabFragment02 extends Fragment {
 
         chart.setScaleEnabled(false);
         chart.setPinchZoom(false);
-        chart.animateY(3000);
+        chart.animateY(1000);
         chart.setDescription(null);
         chart.getAxisLeft().setAxisMinimum(0f);
         chart.getAxisRight().setDrawGridLines(false);

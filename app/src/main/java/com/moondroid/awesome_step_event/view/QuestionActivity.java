@@ -11,6 +11,7 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,6 +50,7 @@ public class QuestionActivity extends AppCompatActivity {
 
         private Context context;
         private String[] questions;
+        private String[] answers;
 
         private SparseBooleanArray selectedItems = new SparseBooleanArray();
 
@@ -57,6 +59,7 @@ public class QuestionActivity extends AppCompatActivity {
         public RecyclerAdapter(Context context, String[] questions) {
             this.context = context;
             this.questions = questions;
+            answers = context.getResources().getStringArray(R.array.answers);
         }
 
         @NonNull
@@ -67,7 +70,7 @@ public class QuestionActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolderQuestion holder, int position) {
-            holder.onBind(questions[position], position, selectedItems);
+            holder.onBind(questions[position],answers[position], position, selectedItems);
             holder.setOnViewHolderItemClickListener(new OnViewHolderItemClickListener() {
                 @Override
                 public void onViewHolderItemClick() {
@@ -94,6 +97,7 @@ public class QuestionActivity extends AppCompatActivity {
             TextView tvQuestion;
             TextView tvQuestionDetail;
             LinearLayout linearLayout;
+            ImageView ivDownImage;
             OnViewHolderItemClickListener onViewHolderItemClickListener;
 
             public ViewHolderQuestion(@NonNull View itemView) {
@@ -101,6 +105,7 @@ public class QuestionActivity extends AppCompatActivity {
                 tvQuestion = itemView.findViewById(R.id.tv_question_title);
                 tvQuestionDetail = itemView.findViewById(R.id.tv_question_detail);
                 linearLayout = itemView.findViewById(R.id.question_container);
+                ivDownImage = itemView.findViewById(R.id.question_recycler_down_image);
 
                 linearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -110,9 +115,9 @@ public class QuestionActivity extends AppCompatActivity {
                 });
             }
 
-            public void onBind(String question, int position, SparseBooleanArray selectedItems) {
+            public void onBind(String question, String answer, int position, SparseBooleanArray selectedItems) {
                 tvQuestion.setText(question);
-                tvQuestionDetail.setText(question);
+                tvQuestionDetail.setText(answer);
                 changeVisibility(selectedItems.get(position));
             }
 
@@ -122,7 +127,8 @@ public class QuestionActivity extends AppCompatActivity {
                 va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
-                        tvQuestionDetail.getLayoutParams().height = (int) animation.getAnimatedValue();
+//                        tvQuestionDetail.getLayoutParams().height = (int) animation.getAnimatedValue();
+                        animation.setIntValues(tvQuestionDetail.getLayoutParams().height);
                         tvQuestionDetail.requestLayout();
                         tvQuestionDetail.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
                     }

@@ -62,7 +62,7 @@ public class TabFragment03 extends Fragment {
 
         chart.setScaleEnabled(false);
         chart.setPinchZoom(false);
-        chart.animateY(3000);
+        chart.animateY(1000);
         chart.setDescription(null);
         chart.getAxisLeft().setAxisMinimum(0f);
         chart.getAxisRight().setDrawGridLines(false);

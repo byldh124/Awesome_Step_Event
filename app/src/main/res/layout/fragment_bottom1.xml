@@ -21,8 +21,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/menu_ic_show_customer_center"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_gravity="end"
                 android:layout_marginRight="16dp"
                 android:src="@drawable/ic_question"/>
@@ -30,9 +30,9 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/menu_ic_show_dialog"
                 android:clickable="true"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_dialog"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_pages"
                 android:layout_gravity="end"
                 android:layout_marginRight="8dp"/>
         </com.google.android.material.appbar.MaterialToolbar>

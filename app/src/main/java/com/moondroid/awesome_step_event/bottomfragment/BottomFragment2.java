@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,10 +16,12 @@ import com.moondroid.awesome_step_event.R;
 import com.moondroid.awesome_step_event.view.OnlineCertificationActivity;
 import com.moondroid.awesome_step_event.view.ShareActivity;
 
-public class BottomFragment2 extends Fragment{
+public class BottomFragment2 extends Fragment implements View.OnClickListener {
 
     Button btnCertification;
     Button btnShare;
+
+    TextView tvInformation, tvMissionComplete, tvStepCount;
 
     @Nullable
     @Override
@@ -33,6 +36,12 @@ public class BottomFragment2 extends Fragment{
         btnCertification.setOnClickListener(certificationListener);
         btnShare = view.findViewById(R.id.bottom2_btn_share);
         btnShare.setOnClickListener(shareListener);
+
+        tvInformation = view.findViewById(R.id.bottom2_information);
+        tvMissionComplete = view.findViewById(R.id.bottom2_tv_complete_mission);
+        tvStepCount = view.findViewById(R.id.bottom2_tv_step_count);
+
+        tvInformation.setOnClickListener(this);
     }
 
     View.OnClickListener certificationListener = new View.OnClickListener() {
@@ -49,4 +58,10 @@ public class BottomFragment2 extends Fragment{
         }
     };
 
+    @Override
+    public void onClick(View v) {
+        tvStepCount.setText("6,220 걸음");
+        btnCertification.setBackground(getResources().getDrawable(R.drawable.active_button_selector));
+        tvMissionComplete.setVisibility(View.VISIBLE);
+    }
 }

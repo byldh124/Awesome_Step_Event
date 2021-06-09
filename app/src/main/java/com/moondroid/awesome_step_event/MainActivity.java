@@ -2,15 +2,26 @@ package com.moondroid.awesome_step_event;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.fitness.Fitness;
+import com.google.android.gms.fitness.FitnessOptions;
+import com.google.android.gms.fitness.data.DataType;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.moondroid.awesome_step_event.bottomfragment.BottomFragment1;
 import com.moondroid.awesome_step_event.bottomfragment.BottomFragment2;
@@ -20,11 +31,17 @@ import com.moondroid.awesome_step_event.view.DialogActivity;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
+    private static final int REQUEST_OAUTH_REQUEST_CODE = 0x1001;
+    private static final int REQUEST_CODE_FOR_PERMISSION = 1;
     private BottomNavigationView bottomNavigationView;
     private FragmentManager fragmentManager;
     private Fragment[] fragments;
+    FitnessOptions fitnessOptions;
 
     private View dialogView;
+
+    private long backKeyPressedTime = 0;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +56,36 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        if (true) {
-            startActivity(new Intent(this, DialogActivity.class));
+        String[] permissions = new String[]{Manifest.permission.ACTIVITY_RECOGNITION, Manifest.permission.ACCESS_FINE_LOCATION};
+        if (ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_DENIED || ActivityCompat.checkSelfPermission(this, permissions[1]) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE_FOR_PERMISSION);
         }
 
+        fitnessOptions = FitnessOptions.builder()
+                .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
+                .build();
+        if (!GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(this), fitnessOptions)) {
+            GoogleSignIn.requestPermissions(
+                    this,
+                    REQUEST_OAUTH_REQUEST_CODE,
+                    GoogleSignIn.getLastSignedInAccount(this),
+                    fitnessOptions);
+        } else {
+            Fitness.getRecordingClient(this,
+                    GoogleSignIn.getLastSignedInAccount(this))
+                    .subscribe(DataType.TYPE_STEP_COUNT_DELTA)
+                    .addOnCompleteListener(
+                            new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.i("TAG", "Successfully subscribed!");
+                                    } else {
+                                        Log.w("TAG", "There was a problem subscribing.", task.getException());
+                                    }
+                                }
+                            });
+        }
     }
 
     @Override
@@ -91,5 +134,28 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         transaction.commit();
 
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        // 기존 뒤로가기 버튼의 기능을 막기위해 주석처리 또는 삭제
+        // super.onBackPressed();
+
+        // 마지막으로 뒤로가기 버튼을 눌렀던 시간에 2초를 더해 현재시간과 비교 후
+        // 마지막으로 뒤로가기 버튼을 눌렀던 시간이 2초가 지났으면 Toast Show
+        // 2000 milliseconds = 2 seconds
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            toast = Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+        // 마지막으로 뒤로가기 버튼을 눌렀던 시간에 2초를 더해 현재시간과 비교 후
+        // 마지막으로 뒤로가기 버튼을 눌렀던 시간이 2초가 지나지 않았으면 종료
+        // 현재 표시된 Toast 취소
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            finish();
+            toast.cancel();
+        }
     }
 }

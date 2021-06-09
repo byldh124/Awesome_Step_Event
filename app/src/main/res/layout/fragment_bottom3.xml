@@ -1,6 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/bottom_03_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:paddingEnd="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/title01"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_medal"
+            android:layout_gravity="end"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_search"
+            android:layout_gravity="end"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/bottom3_btn_profile_set"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_person"
+            android:layout_gravity="end"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:clickable="true"/>
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:src="@drawable/bottom3_01" />
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

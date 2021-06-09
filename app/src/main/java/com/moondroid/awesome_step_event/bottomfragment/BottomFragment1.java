@@ -61,8 +61,13 @@ public class BottomFragment1 extends Fragment {
         btnDialog = view.findViewById(R.id.menu_ic_show_dialog);
         btnQuestion = view.findViewById(R.id.menu_ic_show_customer_center);
 
-        ((MainActivity)getActivity()).setSupportActionBar(toolbar);
-        ((MainActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
+
+
+
+        ((MainActivity) getActivity()).setSupportActionBar(toolbar);
+        ((MainActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         adapter = new CollectionAdapter(fragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         pager.setAdapter(adapter);
@@ -71,13 +76,17 @@ public class BottomFragment1 extends Fragment {
         btnDialog.setOnClickListener(dialogClickListener);
         btnQuestion.setOnClickListener(questionClickListener);
 
+        if (true){
+            showDialog();
+        }
+
 
     }
 
     View.OnClickListener dialogClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(getActivity(), DialogActivity.class));
+           showDialog();
         }
     };
 
@@ -115,5 +124,9 @@ public class BottomFragment1 extends Fragment {
         public CharSequence getPageTitle(int position) {
             return titles[position];
         }
+    }
+
+    public void showDialog() {
+        startActivity(new Intent(getActivity(), DialogActivity.class));
     }
 }
