@@ -21,7 +21,9 @@
             android:text="사진삭제"
             android:textColor="@color/white"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:clickable="true"
+            android:onClick="clickDeleteImage"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_set_profile_image"
@@ -45,7 +47,9 @@
             app:layout_constraintHeight_percent="0.2"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintRight_toRightOf="@id/profile_set_profile_image"
-            app:tint="#ff333333" />
+            app:tint="#ff333333"
+            android:clickable="true"
+            android:onClick="clickChangeProfile"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -61,11 +65,12 @@
             android:layout_marginBottom="4dp"
             android:text="휴대폰 번호" />
 
-        <EditText
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_basic_box"
             android:padding="8dp"
+            android:textColor="#ff333333"
             android:text="010-3626-0029" />
 
         <TextView
@@ -75,11 +80,12 @@
             android:layout_marginBottom="4dp"
             android:text="이름" />
 
-        <EditText
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_basic_box"
             android:padding="8dp"
+            android:textColor="#ff333333"
             android:text="홍길동"/>
 
         <TextView
@@ -94,6 +100,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_basic_box"
             android:padding="8dp"
+            android:theme="@style/AppTheme"
+            android:textSize="14sp"
             android:text="율도국 대장"/>
     </LinearLayout>
 
@@ -113,7 +121,8 @@
             android:background="@drawable/none_active_button_selector"
             android:fontFamily="@font/font_ex"
             app:backgroundTint="@null"
-            android:text="취소" />
+            android:text="취소"
+            android:onClick="clickCancel"/>
 
         <Button
             android:layout_width="0dp"

@@ -10,7 +10,8 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/certification_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/ToolbarTheme_white">
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,7 +30,7 @@
             android:clickable="true"
             android:focusable="true"
             android:onClick="clickShare"
-            android:src="@android:drawable/ic_menu_share"
+            android:src="@drawable/ic_baseline_share_24"
             app:tint="@color/white" />
 
         <ImageView
@@ -45,10 +46,11 @@
     </com.google.android.material.appbar.MaterialToolbar>
 
     <RelativeLayout
+        android:id="@+id/certification_certification_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/certification_toolbar"
-        android:padding="16dp">
+        android:layout_margin="16dp">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -59,133 +61,158 @@
             app:strokeColor="@color/white"
             app:strokeWidth="2dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                android:background="@drawable/certification_container_box"
-                android:orientation="vertical"
-                android:weightSum="10">
+                android:layout_height="match_parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="4">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:src="@drawable/icon"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintDimensionRatio="1"
-                        app:layout_constraintHeight_percent="0.7"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1.5"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginRight="32dp"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/certification_container_box"
+                    android:orientation="vertical"
+                    android:weightSum="10">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="4">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:src="@drawable/icon"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintDimensionRatio="1"
+                            app:layout_constraintHeight_percent="0.7"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_weight="1.5"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/certification_information_step"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginBottom="8dp"
+                                android:text="걸음수" />
+
+                            <TextView
+                                android:id="@+id/certification_step_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/certification_information_step"
+                                android:layout_centerHorizontal="true"
+                                android:text="7,980걸음"
+                                android:textColor="#ff333333"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/certification_information_distance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginBottom="8dp"
+                                android:text="거리" />
+
+                            <TextView
+                                android:id="@+id/certification_distance_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/certification_information_distance"
+                                android:layout_centerHorizontal="true"
+                                android:text="5.3km"
+                                android:textColor="#ff333333"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+                    </LinearLayout>
 
                     <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center">
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="4.5">
 
                         <TextView
-                            android:id="@+id/certification_information_step"
+                            android:id="@+id/certification_text_default"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginBottom="8dp"
-                            android:text="걸음수" />
+                            android:gravity="center"
+                            android:padding="16dp"
+                            android:text="@string/certification_text_example" />
 
                         <TextView
-                            android:id="@+id/certification_step_count"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/certification_date"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/certification_information_step"
+                            android:layout_below="@+id/certification_text_default"
+                            android:gravity="center"
+                            android:text="2021-05-24" />
+
+                        <ImageView
+                            android:id="@+id/certification_logo"
+                            android:layout_width="180dp"
+                            android:layout_height="120dp"
+                            android:layout_below="@id/certification_date"
                             android:layout_centerHorizontal="true"
-                            android:text="7,980걸음"
-                            android:textColor="#ff333333"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/main_logo01" />
+
+                        <ImageView
+                            android:id="@+id/certification_complete_mark"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_below="@id/certification_date"
+                            android:layout_marginRight="16dp"
+                            android:layout_toRightOf="@id/certification_logo"
+                            android:src="@drawable/complete_mark" />
                     </RelativeLayout>
 
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center">
-
-                        <TextView
-                            android:id="@+id/certification_information_distance"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginBottom="8dp"
-                            android:text="거리" />
-
-                        <TextView
-                            android:id="@+id/certification_distance_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/certification_information_distance"
-                            android:layout_centerHorizontal="true"
-                            android:text="5.3km"
-                            android:textColor="#ff333333"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </RelativeLayout>
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:id="@+id/certification_blur_container"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="4.5">
+                    android:layout_height="match_parent"
+                    android:background="#aaffffff">
+
                     <TextView
-                        android:id="@+id/certification_text_default"
-                        android:layout_width="wrap_content"
+                        android:layout_width="320dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/certification_text_example"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/bottom2_information_text_box"
+                        android:gravity="center"
                         android:padding="16dp"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="center"/>
-
-                    <TextView
-                        android:id="@+id/certification_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="2021-05-24"
-                        android:layout_below="@+id/certification_text_default"
-                        android:gravity="center"/>
-
-                    <ImageView
-                        android:id="@+id/certification_logo"
-                        android:layout_width="180dp"
-                        android:layout_height="120dp"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/main_logo01"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:layout_below="@id/certification_date"/>
-                    <ImageView
-                        android:id="@+id/certification_complete_mark"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:layout_toRightOf="@id/certification_logo"
-                        android:src="@drawable/complete_mark"
-                        android:layout_below="@id/certification_date"
-                        android:layout_marginRight="16dp"/>
+                        android:text="6,000걸음을 걸어 완주미션을 완료하면\n인증서를 발급받을 수 있어요"
+                        android:textColor="#ff333333" />
                 </RelativeLayout>
-
-            </LinearLayout>
+            </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
     </RelativeLayout>
 

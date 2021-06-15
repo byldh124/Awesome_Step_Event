@@ -7,16 +7,19 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        app:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/bottom_01_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:layout_marginBottom="8dp">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
                 android:src="@drawable/title01"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -34,15 +37,22 @@
                 android:layout_height="32dp"
                 android:src="@drawable/ic_pages"
                 android:layout_gravity="end"
-                android:layout_marginRight="8dp"/>
+                android:layout_marginRight="4dp" />
         </com.google.android.material.appbar.MaterialToolbar>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/bottom_01_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabIndicatorColor="@color/main"
-            app:tabSelectedTextColor="@color/main"/>
+            android:background="@color/background"
+            app:elevation="0dp"
+            app:tabIndicatorHeight="0dp"
+            app:tabBackground="@drawable/bottom_01_tab_background"
+            app:tabRippleColor="@null"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="@color/none_active"
+            app:tabIndicatorColor="@color/main"/>
+
 
     </com.google.android.material.appbar.AppBarLayout>
 

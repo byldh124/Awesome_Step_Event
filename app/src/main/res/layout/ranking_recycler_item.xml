@@ -2,38 +2,46 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:layout_margin="4dp">
 
     <TextView
         android:id="@+id/ranking_item_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1"
+        android:textColor="#ff333333"
+        android:layout_marginEnd="8dp"
         android:layout_centerVertical="true"
         android:layout_marginRight="8dp"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ranking_item_profile"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/app_logo"
-        android:layout_toRightOf="@id/ranking_item_no"/>
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/ranking_item_no"/>
 
     <TextView
         android:id="@+id/ranking_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="김네이버스"
-        android:layout_toRightOf="@id/ranking_item_profile"
+        android:layout_marginLeft="8dp"
+        android:textColor="#ff333333"
+        android:layout_toEndOf="@id/ranking_item_profile"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="8dp"/>
+        android:layout_marginStart="8dp"/>
 
     <TextView
         android:id="@+id/ranking_item_step_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="50,254"
-        android:layout_toLeftOf="@id/ranking_item_step_text"
+        android:textColor="#ff333333"
+        android:textStyle="bold"
+        android:layout_toStartOf="@id/ranking_item_step_text"
         android:layout_centerVertical="true"/>
 
     <TextView
@@ -41,7 +49,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="걸음"
-        android:layout_marginLeft="8dp"
+        android:textColor="#ff333333"
+        android:layout_marginStart="8dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"/>
 </RelativeLayout>

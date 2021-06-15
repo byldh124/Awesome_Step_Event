@@ -61,17 +61,22 @@ public class BottomFragment1 extends Fragment {
         btnDialog = view.findViewById(R.id.menu_ic_show_dialog);
         btnQuestion = view.findViewById(R.id.menu_ic_show_customer_center);
 
-
-
-
-
-
         ((MainActivity) getActivity()).setSupportActionBar(toolbar);
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         adapter = new CollectionAdapter(fragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(pager, false);
+
+        for (int i=0; i< tabLayout.getTabCount(); i++){
+            View tab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(i);
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tab.getLayoutParams();
+            p.setMargins(30,15,0,15);
+            if (i == 3){
+                p.setMargins(30,15,30,15);
+            }
+            tab.requestLayout();
+        }
 
         btnDialog.setOnClickListener(dialogClickListener);
         btnQuestion.setOnClickListener(questionClickListener);

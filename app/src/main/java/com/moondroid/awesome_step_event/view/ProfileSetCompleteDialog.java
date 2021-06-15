@@ -37,5 +37,6 @@ public class ProfileSetCompleteDialog extends Dialog implements View.OnClickList
     @Override
     public void onClick(View v) {
         dismiss();
+        ((ProfileSettingActivity)context).finish();
     }
 }

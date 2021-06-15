@@ -7,7 +7,7 @@
     android:padding="16dp">
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottie_main"
+        android:id="@+id/lottie_tab1"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@id/text_information"
@@ -19,6 +19,7 @@
         app:lottie_autoPlay="true"
         app:lottie_rawRes="@raw/liquid"
         app:lottie_repeatCount="-1" />
+
 
     <TextView
         android:id="@+id/text_information"
@@ -42,7 +43,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/active_button_selector"
             android:fontFamily="@font/font_ex"
-            android:text="@string/step_start"
+            android:text="걸음시작"
             app:backgroundTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"/>
 

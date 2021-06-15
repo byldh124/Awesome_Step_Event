@@ -7,6 +7,9 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.util.Log;
@@ -20,6 +23,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptionsExtension;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
+import com.google.android.gms.fitness.SensorsApi;
+import com.google.android.gms.fitness.SensorsClient;
 import com.google.android.gms.fitness.data.DataPoint;
 import com.google.android.gms.fitness.data.DataSource;
 import com.google.android.gms.fitness.data.DataType;
@@ -31,31 +36,53 @@ import com.google.android.gms.fitness.request.SensorRequest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.moondroid.awesome_step_event.MainActivity;
 import com.moondroid.awesome_step_event.R;
 import com.moondroid.awesome_step_event.global.StepValue;
 import com.moondroid.awesome_step_event.view.IntroActivity;
+import com.moondroid.awesome_step_event.view.StepDialogActivity;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class StepCheckService extends Service implements OnDataPointListener {
+public class StepCheckService extends Service implements OnDataPointListener, SensorEventListener {
 
     GoogleSignInOptionsExtension fitnessOptions;
-
     GoogleSignInAccount googleSignInAccount;
+    Notification notification;
+
+    int count = StepValue.Step;
+    private long lastTime;
+    private float speed;
+    private float lastX;
+    private float lastY;
+    private float lastZ;
+
+    private float x, y, z;
+    private static final int SHAKE_THRESHOLD = 800;
+
+    private SensorManager sensorManager;
+    private Sensor accelerometerSensor;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
         fitnessOptions = FitnessOptions.builder()
                 .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
                 .build();
 
-        googleSignInAccount = GoogleSignIn.getAccountForExtension(this, fitnessOptions);
+//        googleSignInAccount = GoogleSignIn.getAccountForExtension(this, fitnessOptions);
 
-        Fitness.getSensorsClient(this, GoogleSignIn.getAccountForExtension(this, fitnessOptions))
+        googleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
+
+        assert googleSignInAccount != null;
+        Fitness.getSensorsClient(this, googleSignInAccount)
                 .findDataSources(
                         new DataSourcesRequest.Builder()
                                 .setDataTypes(DataType.TYPE_STEP_COUNT_DELTA)
@@ -64,6 +91,7 @@ public class StepCheckService extends Service implements OnDataPointListener {
                 .addOnSuccessListener(new OnSuccessListener<List<DataSource>>() {
                     @Override
                     public void onSuccess(List<DataSource> dataSources) {
+                        connectListener();
                         for (DataSource dataSource : dataSources) {
                             if (dataSource.getDataType() == DataType.TYPE_STEP_COUNT_DELTA) {
                                 Log.i("data type", "Data source for STEP_COUNT_DELTA found!");
@@ -74,7 +102,6 @@ public class StepCheckService extends Service implements OnDataPointListener {
                 .addOnFailureListener(e ->
                         Log.e("error", "Find data sources request failed", e));
 
-        connectListener();
     }
 
     @Override
@@ -96,20 +123,20 @@ public class StepCheckService extends Service implements OnDataPointListener {
 
         //알림(Notification)을 클릭하여 서비스를 제어할 수 있는
         //버튼이 있는 MainActivity 가 실행될 수 있도록.. 보류중인 인텐트 설정
-        Intent intent1 = new Intent(this, IntroActivity.class);
-        intent1.setAction(Intent.ACTION_MAIN);
-        intent1.addCategory(Intent.CATEGORY_LAUNCHER);
-        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent1 = new Intent(this, StepDialogActivity.class);
+        intent1.putExtra("notification", "stepService");
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 100, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pendingIntent);
-
         builder.setAutoCancel(true);
-
-        Notification notification = builder.build();
+        notification = builder.build();
 
         //포어그라운드로 실행되도록..
         //포어그라운드 사용에 대한 퍼미션 작업 [Manifest.xml]
         startForeground(1, notification);
+
+        if (accelerometerSensor != null) {
+            sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+        } // end of if
 
         return START_STICKY;
     }
@@ -122,39 +149,42 @@ public class StepCheckService extends Service implements OnDataPointListener {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        if (sensorManager != null) sensorManager.unregisterListener(this);
         removeListener();
+        stopSelf();
+        super.onDestroy();
     }
+
 
     @Override
     public void onDataPoint(@NonNull @NotNull DataPoint dataPoint) {
-        for (Field field : dataPoint.getDataType().getFields()){
+        if (sensorManager != null){
+            sensorManager.unregisterListener(this);
+            sensorManager = null;
+            accelerometerSensor = null;
+        }
+        for (Field field : dataPoint.getDataType().getFields()) {
             Value value = dataPoint.getValue(field);
-            for (int i = 0; i< value.asInt(); i++){
+            for (int i = 0; i < value.asInt(); i++) {
                 StepValue.Step++;
             }
         }
-
         Intent myResponse = new Intent("make.a.awesome.walk");
-        String msg = StepValue.Step + "";
-        myResponse.putExtra("stepService", msg);
         sendBroadcast(myResponse);
     }
 
     public void connectListener() {
         subscribe();
         Task<Void> response = Fitness.getSensorsClient(this, googleSignInAccount)
-                .add(new SensorRequest.Builder()
-                        .setDataType(DataType.TYPE_STEP_COUNT_DELTA)
-//                        .setDataSource(new DataSource.Builder().setType(DataSource.TYPE_RAW).build())
-                        .setSamplingRate(1, TimeUnit.SECONDS)
-                        .setMaxDeliveryLatency(5, TimeUnit.SECONDS)
-                        .build(), this);
+                .add(StepValue.sensorRequest, this);
         response.addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                Log.i("Tag", "response");
             }
         });
+
+
     }
 
     public void removeListener() {
@@ -183,5 +213,45 @@ public class StepCheckService extends Service implements OnDataPointListener {
                                 }
                             }
                         });
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            long currentTime = System.currentTimeMillis();
+            long gabOfTime = (currentTime - lastTime);
+
+            if (gabOfTime > 100) { //  gap of time of step count
+                Log.i("onSensorChanged_IF", "FIRST_IF_IN");
+                lastTime = currentTime;
+
+                x = event.values[0];
+                y = event.values[1];
+                z = event.values[2];
+
+                speed = Math.abs(x + y + z - lastX - lastY - lastZ) / gabOfTime * 10000;
+
+                if (speed > SHAKE_THRESHOLD && speed < 2000) {
+                    Log.i("onSensorChanged_IF", "SECOND_IF_IN");
+                    Intent myFilteredResponse = new Intent("make.a.awesome.walk");
+
+                    StepValue.Step = count++;
+
+                    String msg = StepValue.Step + "";
+                    myFilteredResponse.putExtra("stepService", msg);
+
+                    sendBroadcast(myFilteredResponse);
+                } // end of if
+
+                lastX = event.values[0];
+                lastY = event.values[1];
+                lastZ = event.values[2];
+            } // end of if
+        } // end of if
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ public class BottomFragment2 extends Fragment implements View.OnClickListener {
     Button btnShare;
 
     TextView tvInformation, tvMissionComplete, tvStepCount;
+    ImageView certificationBackgroundImageView;
 
     @Nullable
     @Override
@@ -40,6 +42,7 @@ public class BottomFragment2 extends Fragment implements View.OnClickListener {
         tvInformation = view.findViewById(R.id.bottom2_information);
         tvMissionComplete = view.findViewById(R.id.bottom2_tv_complete_mission);
         tvStepCount = view.findViewById(R.id.bottom2_tv_step_count);
+        certificationBackgroundImageView = view.findViewById(R.id.certification_iv_background_image);
 
         tvInformation.setOnClickListener(this);
     }
@@ -47,7 +50,9 @@ public class BottomFragment2 extends Fragment implements View.OnClickListener {
     View.OnClickListener certificationListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(getActivity(), OnlineCertificationActivity.class));
+            Intent intent = new Intent(getActivity(), OnlineCertificationActivity.class);
+            intent.putExtra("stepCount", tvStepCount.getText().toString());
+            startActivity(intent);
         }
     };
 
@@ -60,8 +65,16 @@ public class BottomFragment2 extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        tvStepCount.setText("6,220 걸음");
-        btnCertification.setBackground(getResources().getDrawable(R.drawable.active_button_selector));
-        tvMissionComplete.setVisibility(View.VISIBLE);
+        if (tvStepCount.getText().toString().equals("4,220걸음")) {
+            tvStepCount.setText("6,220걸음");
+            btnCertification.setBackground(getResources().getDrawable(R.drawable.active_button_selector));
+            tvMissionComplete.setVisibility(View.VISIBLE);
+            certificationBackgroundImageView.setImageResource(R.drawable.bottom2_01);
+        } else {
+            tvStepCount.setText("4,220걸음");
+            btnCertification.setBackground(getResources().getDrawable(R.drawable.none_active_button_selector));
+            tvMissionComplete.setVisibility(View.INVISIBLE);
+            certificationBackgroundImageView.setImageResource(R.drawable.bottom2_02);
+        }
     }
 }

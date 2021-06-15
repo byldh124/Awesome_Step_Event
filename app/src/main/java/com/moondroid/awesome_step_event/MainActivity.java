@@ -28,6 +28,7 @@ import com.moondroid.awesome_step_event.bottomfragment.BottomFragment2;
 import com.moondroid.awesome_step_event.bottomfragment.BottomFragment3;
 import com.moondroid.awesome_step_event.bottomfragment.BottomFragment4;
 import com.moondroid.awesome_step_event.view.DialogActivity;
+import com.moondroid.awesome_step_event.view.StepDialogActivity;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -56,9 +57,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        String[] permissions = new String[]{Manifest.permission.ACTIVITY_RECOGNITION, Manifest.permission.ACCESS_FINE_LOCATION};
+        String[] permissions = new String[]{Manifest.permission.ACTIVITY_RECOGNITION, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_DENIED || ActivityCompat.checkSelfPermission(this, permissions[1]) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE_FOR_PERMISSION);
+        }
+
+        String notification = getIntent().getStringExtra("notification");
+        if (notification != null) {
+            Toast.makeText(this, notification, Toast.LENGTH_SHORT).show();
+            switch (notification) {
+                case "stepService":
+                    startActivity(new Intent(this, StepDialogActivity.class));
+                    break;
+            }
         }
 
         fitnessOptions = FitnessOptions.builder()

@@ -7,10 +7,10 @@
 
     <RelativeLayout
         android:id="@+id/tab4_ranking_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp">
+        android:gravity="center">
 
         <TextView
             android:id="@+id/tab4_ranking_text"
@@ -34,12 +34,20 @@
 
     </RelativeLayout>
 
+    <FrameLayout
+        android:id="@+id/tab4_line1"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ffcccccc"
+        android:layout_below="@id/tab4_ranking_container"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tab4_ranking_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tab4_ranking_container"
-        android:padding="16dp"
+        android:layout_below="@id/tab4_line1"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"/>
 
