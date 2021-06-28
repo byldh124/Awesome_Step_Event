@@ -70,11 +70,7 @@ public class OnlineCertificationActivity extends AppCompatActivity {
         Bitmap bitmap = certificationContainer.getDrawingCache();
         Toast.makeText(this, bitmap.toString(), Toast.LENGTH_SHORT).show();
         String ex_storage = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String folder_name = "/" + "Pictures/StepForWater" +
-                "" +
-                "" +
-                "" +
-                "" + "/";
+        String folder_name = "/" + "Pictures/StepForWater" + "/";
         String name = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".jpg";
         String string_path = ex_storage + folder_name;
 

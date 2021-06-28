@@ -11,11 +11,14 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -36,6 +39,7 @@ import com.google.android.gms.fitness.request.SensorRequest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.moondroid.awesome_step_event.MainActivity;
 import com.moondroid.awesome_step_event.R;
 import com.moondroid.awesome_step_event.global.StepValue;
@@ -66,6 +70,13 @@ public class StepCheckService extends Service implements OnDataPointListener, Se
     private SensorManager sensorManager;
     private Sensor accelerometerSensor;
 
+
+    private static final SensorRequest sensorRequest = new SensorRequest.Builder()
+            .setDataType(DataType.TYPE_STEP_COUNT_DELTA)
+            .setSamplingRate(1, TimeUnit.SECONDS)
+            .build();
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate() {
         super.onCreate();
@@ -77,11 +88,12 @@ public class StepCheckService extends Service implements OnDataPointListener, Se
                 .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
                 .build();
 
-//        googleSignInAccount = GoogleSignIn.getAccountForExtension(this, fitnessOptions);
+        googleSignInAccount = GoogleSignIn.getAccountForExtension(this, fitnessOptions);
 
-        googleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
 
-        assert googleSignInAccount != null;
+
+//        googleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
+
         Fitness.getSensorsClient(this, googleSignInAccount)
                 .findDataSources(
                         new DataSourcesRequest.Builder()
@@ -101,7 +113,6 @@ public class StepCheckService extends Service implements OnDataPointListener, Se
                 })
                 .addOnFailureListener(e ->
                         Log.e("error", "Find data sources request failed", e));
-
     }
 
     @Override
@@ -155,13 +166,13 @@ public class StepCheckService extends Service implements OnDataPointListener, Se
         super.onDestroy();
     }
 
-
     @Override
     public void onDataPoint(@NonNull @NotNull DataPoint dataPoint) {
         if (sensorManager != null){
             sensorManager.unregisterListener(this);
             sensorManager = null;
             accelerometerSensor = null;
+            Toast.makeText(this, "Google fitness api on", Toast.LENGTH_SHORT).show();
         }
         for (Field field : dataPoint.getDataType().getFields()) {
             Value value = dataPoint.getValue(field);
@@ -176,25 +187,31 @@ public class StepCheckService extends Service implements OnDataPointListener, Se
     public void connectListener() {
         subscribe();
         Task<Void> response = Fitness.getSensorsClient(this, googleSignInAccount)
-                .add(StepValue.sensorRequest, this);
+                .add(sensorRequest, this);
         response.addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.i("Tag", "response");
             }
         });
-
-
+//        Fitness.getSensorsClient(this, GoogleSignIn.getAccountForExtension(this, fitnessOptions))
+//                .add(sensorRequest,this)
+//                .addOnSuccessListener(unused ->
+//                        Log.i("TAG", "Listener registered!"))
+//                .addOnFailureListener(task ->
+//                        Log.e("TAG", "Listener not registered.", task.getCause()));
     }
 
     public void removeListener() {
         Task<Boolean> response = Fitness.getSensorsClient(this, googleSignInAccount)
-                .remove(this);
+                .remove( this);
         response.addOnSuccessListener(new OnSuccessListener<Boolean>() {
             @Override
             public void onSuccess(Boolean aBoolean) {
+                Log.i("Tag", "response");
             }
         });
+
     }
 
     public void subscribe() {
@@ -213,6 +230,7 @@ public class StepCheckService extends Service implements OnDataPointListener, Se
                                 }
                             }
                         });
+
     }
 
     @Override
@@ -221,7 +239,7 @@ public class StepCheckService extends Service implements OnDataPointListener, Se
             long currentTime = System.currentTimeMillis();
             long gabOfTime = (currentTime - lastTime);
 
-            if (gabOfTime > 100) { //  gap of time of step count
+            if (gabOfTime > 150) { //  gap of time of step count
                 Log.i("onSensorChanged_IF", "FIRST_IF_IN");
                 lastTime = currentTime;
 

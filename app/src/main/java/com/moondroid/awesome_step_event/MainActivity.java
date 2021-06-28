@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.data.DataType;
@@ -56,8 +59,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         fragmentManager.beginTransaction().add(R.id.main_container, fragments[0]).commit();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+//        AccountManager am = AccountManager.get(this);
+//        Bundle options = new Bundle();
+//        am.getAuthToken(new Account())
 
-        String[] permissions = new String[]{Manifest.permission.ACTIVITY_RECOGNITION, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        String[] permissions = new String[]{Manifest.permission.ACTIVITY_RECOGNITION, Manifest.permission.ACCESS_FINE_LOCATION};
         if (ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_DENIED || ActivityCompat.checkSelfPermission(this, permissions[1]) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE_FOR_PERMISSION);
         }
@@ -75,15 +81,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         fitnessOptions = FitnessOptions.builder()
                 .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
                 .build();
-        if (!GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(this), fitnessOptions)) {
+
+        GoogleSignInAccount googleSignIn = GoogleSignIn.getLastSignedInAccount(this);
+        if (!GoogleSignIn.hasPermissions(googleSignIn, fitnessOptions)) {
             GoogleSignIn.requestPermissions(
                     this,
                     REQUEST_OAUTH_REQUEST_CODE,
-                    GoogleSignIn.getLastSignedInAccount(this),
+                    googleSignIn,
                     fitnessOptions);
         } else {
             Fitness.getRecordingClient(this,
-                    GoogleSignIn.getLastSignedInAccount(this))
+                    googleSignIn)
                     .subscribe(DataType.TYPE_STEP_COUNT_DELTA)
                     .addOnCompleteListener(
                             new OnCompleteListener<Void>() {
@@ -98,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                             });
         }
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
