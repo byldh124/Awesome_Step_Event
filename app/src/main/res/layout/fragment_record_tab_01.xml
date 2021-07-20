@@ -4,50 +4,133 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:orientation="vertical"
     android:padding="16dp">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottie_tab1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/text_information"
-        app:layout_constraintDimensionRatio="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.8"
-        app:lottie_autoPlay="true"
-        app:lottie_rawRes="@raw/liquid"
-        app:lottie_repeatCount="-1" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_tab1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/text_information"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.9"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/liquid"
+            app:lottie_repeatCount="-1" />
 
 
-    <TextView
-        android:id="@+id/text_information"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
-        android:text="@string/step_information"
-        android:textColor="#ff333333"
-        app:layout_constraintBottom_toTopOf="@id/tab1_button_container" />
-
-    <RelativeLayout
-        android:id="@+id/tab1_button_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <Button
-            android:id="@+id/btn_step_start"
+        <TextView
+            android:id="@+id/text_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/active_button_selector"
-            android:fontFamily="@font/font_ex"
-            android:text="걸음시작"
-            app:backgroundTint="@null"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="@string/step_information"
+            android:textColor="#ff333333"
+            app:layout_constraintBottom_toTopOf="@id/tab1_button_container" />
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/tab1_button_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <Button
+                android:id="@+id/btn_step_start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/active_button_selector"
+                android:fontFamily="@font/font_ex"
+                android:text="걸음시작"
+                app:backgroundTint="@null"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </RelativeLayout>
+
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <FrameLayout-->
+<!--            android:id="@+id/water_fill"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:background="@drawable/in_water"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/water"-->
+<!--            app:layout_constraintLeft_toLeftOf="@+id/water"-->
+<!--            app:layout_constraintRight_toRightOf="@+id/water" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/water"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:adjustViewBounds="true"-->
+<!--            android:scaleType="centerInside"-->
+<!--            android:src="@drawable/water"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center_horizontal"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/water"-->
+<!--            app:layout_constraintLeft_toLeftOf="@+id/water"-->
+<!--            app:layout_constraintRight_toRightOf="@+id/water"-->
+<!--            app:layout_constraintVertical_bias="0.6"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/water">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvWalkCnt"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:includeFontPadding="false"-->
+<!--                android:text="4220"-->
+<!--                android:textColor="#ff333333"-->
+<!--                android:textSize="30dp"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:layout_marginLeft="2dp"-->
+<!--                android:layout_marginBottom="5dp"-->
+<!--                android:layout_toRightOf="@+id/tvWalkCnt"-->
+<!--                android:text="걸음"-->
+<!--                android:textColor="#ff333333"-->
+<!--                android:textSize="12dp" />-->
+<!--        </LinearLayout>-->
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:text="아래 걸음시작 버튼을 꼭 눌러주세요!\n측정화면을 켜야만 걸음 수가 측정됩니다."-->
+<!--        android:textColor="#ff333333"-->
+<!--        android:textSize="14dp" />-->
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/btnPlay"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:adjustViewBounds="true"-->
+<!--        android:background="#00000000"-->
+<!--        android:scaleType="fitXY"-->
+<!--        android:src="@drawable/play_btn" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

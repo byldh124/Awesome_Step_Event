@@ -81,18 +81,18 @@ public class StepCheckService extends Service implements OnDataPointListener, Se
     public void onCreate() {
         super.onCreate();
 
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+//        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+//        accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         fitnessOptions = FitnessOptions.builder()
                 .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
                 .build();
 
-        googleSignInAccount = GoogleSignIn.getAccountForExtension(this, fitnessOptions);
+//        googleSignInAccount = GoogleSignIn.getAccountForExtension(this, fitnessOptions);
 
 
 
-//        googleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        googleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
 
         Fitness.getSensorsClient(this, googleSignInAccount)
                 .findDataSources(
@@ -113,6 +113,8 @@ public class StepCheckService extends Service implements OnDataPointListener, Se
                 })
                 .addOnFailureListener(e ->
                         Log.e("error", "Find data sources request failed", e));
+
+        Toast.makeText(this, googleSignInAccount.getIdToken(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -145,9 +147,9 @@ public class StepCheckService extends Service implements OnDataPointListener, Se
         //포어그라운드 사용에 대한 퍼미션 작업 [Manifest.xml]
         startForeground(1, notification);
 
-        if (accelerometerSensor != null) {
-            sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
-        } // end of if
+//        if (accelerometerSensor != null) {
+//            sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+//        } // end of if
 
         return START_STICKY;
     }
@@ -168,12 +170,12 @@ public class StepCheckService extends Service implements OnDataPointListener, Se
 
     @Override
     public void onDataPoint(@NonNull @NotNull DataPoint dataPoint) {
-        if (sensorManager != null){
-            sensorManager.unregisterListener(this);
-            sensorManager = null;
-            accelerometerSensor = null;
-            Toast.makeText(this, "Google fitness api on", Toast.LENGTH_SHORT).show();
-        }
+//        if (sensorManager != null){
+//            sensorManager.unregisterListener(this);
+//            sensorManager = null;
+//            accelerometerSensor = null;
+//            Toast.makeText(this, "Google fitness api on", Toast.LENGTH_SHORT).show();
+//        }
         for (Field field : dataPoint.getDataType().getFields()) {
             Value value = dataPoint.getValue(field);
             for (int i = 0; i < value.asInt(); i++) {

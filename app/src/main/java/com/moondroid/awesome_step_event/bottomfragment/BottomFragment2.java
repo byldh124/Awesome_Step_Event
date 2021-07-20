@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ public class BottomFragment2 extends Fragment implements View.OnClickListener {
 
     Button btnCertification;
     Button btnShare;
+    Animation animation;
 
     TextView tvInformation, tvMissionComplete, tvStepCount;
     ImageView certificationBackgroundImageView;
@@ -38,6 +41,7 @@ public class BottomFragment2 extends Fragment implements View.OnClickListener {
         btnCertification.setOnClickListener(certificationListener);
         btnShare = view.findViewById(R.id.bottom2_btn_share);
         btnShare.setOnClickListener(shareListener);
+        animation = AnimationUtils.loadAnimation(getContext(), R.anim.button_animation);
 
         tvInformation = view.findViewById(R.id.bottom2_information);
         tvMissionComplete = view.findViewById(R.id.bottom2_tv_complete_mission);
@@ -68,6 +72,7 @@ public class BottomFragment2 extends Fragment implements View.OnClickListener {
         if (tvStepCount.getText().toString().equals("4,220걸음")) {
             tvStepCount.setText("6,220걸음");
             btnCertification.setBackground(getResources().getDrawable(R.drawable.active_button_selector));
+            btnCertification.startAnimation(animation);
             tvMissionComplete.setVisibility(View.VISIBLE);
             certificationBackgroundImageView.setImageResource(R.drawable.bottom2_01);
         } else {

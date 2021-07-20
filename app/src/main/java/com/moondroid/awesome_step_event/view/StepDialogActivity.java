@@ -12,6 +12,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,6 +47,7 @@ public class StepDialogActivity extends AppCompatActivity {
 
 
     private static final int REQUEST_OAUTH_REQUEST_CODE = 0x1001;
+    Animation animation;
 
     TextView tvStatus;
     TextView tvStatusIcon;
@@ -63,7 +66,8 @@ public class StepDialogActivity extends AppCompatActivity {
     String TAG = "StepCounter:";
     FitnessOptions fitnessOptions;
 
-    FrameLayout waterFillBar;
+    ImageView back;
+    ImageView waterFillBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +83,9 @@ public class StepDialogActivity extends AppCompatActivity {
 
         countText.setText("걸음수 : " + StepValue.Step);
         waterFillBar = findViewById(R.id.water_fill);
-
+        animation = AnimationUtils.loadAnimation(this, R.anim.water_animation);
+        waterFillBar.startAnimation(animation);
+        changeBar();
         ivStepDialogClose = findViewById(R.id.iv_step_dialog_close);
         ivStepDialogClose.setOnClickListener(closeListener);
         receiver = new StepReceiver();
@@ -126,7 +132,7 @@ public class StepDialogActivity extends AppCompatActivity {
     View.OnClickListener closeListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-           onBackPressed();
+            onBackPressed();
         }
     };
 
@@ -158,7 +164,7 @@ public class StepDialogActivity extends AppCompatActivity {
         registerStepService();
     }
 
-    public void registerStepService(){
+    public void registerStepService() {
         try {
             IntentFilter mainFilter = new IntentFilter("make.a.awesome.walk");
             registerReceiver(receiver, mainFilter);
@@ -170,7 +176,7 @@ public class StepDialogActivity extends AppCompatActivity {
         }
     }
 
-    public void unRegisterStepService(){
+    public void unRegisterStepService() {
         try {
             unregisterReceiver(receiver);
             stopService(manboService);
@@ -196,7 +202,7 @@ public class StepDialogActivity extends AppCompatActivity {
         changeBar();
     }
 
-    class StepReceiver extends BroadcastReceiver{
+    class StepReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             countText.setText("걸음수 : " + StepValue.Step);
@@ -281,17 +287,18 @@ public class StepDialogActivity extends AppCompatActivity {
     }
 
     public void changeBar() {
-        float heightPercent = (float) (StepValue.Step/1000.0);
-        if (heightPercent >= (float) 1.0){
-            heightPercent = (float) 0.999999;
-        } else if( heightPercent <= (float) 0.2){
-            heightPercent = (float) 0.2;
-        }
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout.LayoutParams.MATCH_CONSTRAINT);
+        float heightPercent = (float) (1.0 - (float) (StepValue.Step / 6000.0));
+        if (heightPercent <= (float) 0.0) { return; }
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(waterFillBar.getLayoutParams());
         layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID;
         layoutParams.rightToRight = ConstraintLayout.LayoutParams.PARENT_ID;
         layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.matchConstraintPercentHeight = heightPercent;
+        layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+//        layoutParams.matchConstraintPercentHeight = heightPercent;
+        layoutParams.verticalBias = heightPercent;
         waterFillBar.setLayoutParams(layoutParams);
+
+
+//        waterFillBar.setMaxHeight(1);
     }
 }
